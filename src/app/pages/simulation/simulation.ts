@@ -59,5 +59,4 @@ export class Simulation implements AfterViewInit{
   get fieldCamera(): THREE.PerspectiveCamera {
     return this.#camera;
   }
-
 }

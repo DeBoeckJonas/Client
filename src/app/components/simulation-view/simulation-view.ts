@@ -41,11 +41,11 @@ export class SimulationView {
     this.#prevMouseX = e.clientX;
     this.#prevMouseY = e.clientY; 
   }
-  //mouse scroll voor in en uitzoomen, moet tussen z positie 20 en 100 blijven
+  //mouse scroll voor in en uitzoomen, moet tussen z positie 30 (grid is 30, dus zo blijft hele grid zichtbaar) en 100 blijven
   onMouseWheel(e: WheelEvent) { 
     const zoomSpeed = 0.1;
     this.#radius += e.deltaY * zoomSpeed;
-    this.#radius = Math.max(20, Math.min(100, this.#radius));
+    this.#radius = Math.max(30, Math.min(100, this.#radius));
     this.updateCameraPosition();
   }
   //formules voor het correct roteren van de camera
