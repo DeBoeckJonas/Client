@@ -1,0 +1,9 @@
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.playfield-container {
+    width: 100vw;
+    height: 70vh;
+}
