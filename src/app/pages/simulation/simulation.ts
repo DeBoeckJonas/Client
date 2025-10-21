@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { Grid } from '../../models/grid.model';
 import { SimulationView } from "../../components/simulation-view/simulation-view";
 import { StatsPanel } from "../../components/stats-panel/stats-panel";
+import { Plant } from '../../models/plant.model';
 
 @Component({
   selector: 'app-simulation',
@@ -22,7 +23,11 @@ export class Simulation implements AfterViewInit{
   #renderer!: THREE.WebGLRenderer;
   #camera!: THREE.PerspectiveCamera;
   #grid!: Grid;
+  plant!: Plant;
+  plants = new Array;
 
+
+  
   //scene definieren en grid object aanmaken + toevoegen
   ngAfterViewInit(): void {
     const container = this.playFieldRef.nativeElement;
@@ -47,7 +52,17 @@ export class Simulation implements AfterViewInit{
     this.#scene.add(this.#grid.mesh);
     this.#scene.add(this.#grid.grid);
 
-    
+    //plant op grid plaatsen
+    setInterval(():void => {
+    let x = Math.floor(Math.random()*30);
+    let z = Math.floor(Math.random()*30);
+    if(!this.plants.some(p => p.xCoord === x && p.zCoord === z)){
+      this.plant = new Plant(x , z);
+      this.plant.createPlant(this.#scene);
+      this.plants.push(this.plant);
+      console.log(this.plant.id)
+    } else { console.log("taken")}
+    }, 3000);
     
   }
   //rendered de scene en grid
@@ -59,4 +74,10 @@ export class Simulation implements AfterViewInit{
   get fieldCamera(): THREE.PerspectiveCamera {
     return this.#camera;
   }
+
+
+  
+
+
+
 }
