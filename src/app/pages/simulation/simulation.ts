@@ -30,6 +30,7 @@ export class Simulation implements AfterViewInit{
   herbivores = new Array;
   startAmountHerb!: number;
   startAmountPlants!: number;
+  herbivoreSearchRange!: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
   
@@ -130,23 +131,29 @@ export class Simulation implements AfterViewInit{
           }, undefined
         )
         const closestPlant = closestPlantWithDistance?.plant
-        console.log(this.herbivores[i].id + " + " +closestPlant.id)
+        const closestPlantDistance = closestPlantWithDistance?.distancePlant;
+        console.log(this.herbivores[i].id + " + " +closestPlant.id + " at distance " + closestPlantDistance)
 
-
-        
-        if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) === 0 && ((p.zCoord - this.herbivores[i].zCoord) <=5 && (p.zCoord - this.herbivores[i].zCoord)>0))) {
-          moveDirection = 2;
-        } else
-        if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) === 0 && ((p.zCoord - this.herbivores[i].zCoord) >=-5 && (p.zCoord - this.herbivores[i].zCoord)<0))) {
-          moveDirection = 3;} 
-        else
-        if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) <=5 && (p.xCoord - this.herbivores[i].xCoord)>0 && ((p.zCoord - this.herbivores[i].zCoord) <=5 && (p.zCoord - this.herbivores[i].zCoord)>=-5))) {
-          moveDirection = 0;
-        } else
-        if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) >=-5 && (p.xCoord - this.herbivores[i].xCoord)<0&& ((p.zCoord - this.herbivores[i].zCoord) <=5 && (p.zCoord - this.herbivores[i].zCoord)>=-5))) {
-          moveDirection = 1;
+        //SEARCH RANGE NOG USER INPUT
+        this.herbivoreSearchRange = 5;
+        if(closestPlantDistance<=this.herbivoreSearchRange){
+          if(Math.abs(closestPlant.xCoord-this.herbivores[i].xCoord)<=Math.abs(closestPlant.zCoord-this.herbivores[i].zCoord) && (closestPlant.zCoord-this.herbivores[i].zCoord)>0) {
+            //z+
+            moveDirection = 2;
+          } else
+          if(Math.abs(closestPlant.xCoord-this.herbivores[i].xCoord)<=Math.abs(closestPlant.zCoord-this.herbivores[i].zCoord) && (closestPlant.zCoord-this.herbivores[i].zCoord)<0) {
+            //z-
+            moveDirection = 3;} 
+          else
+          if(Math.abs(closestPlant.xCoord-this.herbivores[i].xCoord)>Math.abs(closestPlant.zCoord-this.herbivores[i].zCoord) && (closestPlant.xCoord-this.herbivores[i].xCoord)>0) {
+            //x+
+            moveDirection = 0;
+          } else
+          if(Math.abs(closestPlant.xCoord-this.herbivores[i].xCoord)>Math.abs(closestPlant.zCoord-this.herbivores[i].zCoord) && (closestPlant.xCoord-this.herbivores[i].xCoord)<0) {
+            //x-
+            moveDirection = 1;
+          }
         }
-        
         switch(moveDirection){
           case 0 : 
             this.herbivores[i].xCoord = Math.min(29, this.herbivores[i].xCoord+1);
