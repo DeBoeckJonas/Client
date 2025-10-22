@@ -116,18 +116,37 @@ export class Simulation implements AfterViewInit{
         //bewegen
         //random, anders kijk of eten in distance van 5 is, verkies z richting
         let moveDirection = Math.floor(Math.random()*4);
+        //reduce gebruikt voor dichtste plant te berekenen, via math.abs wordt de totale afstand berekend, daarna check gedaan, als closest undefined is (als startwaarde
+        //opgegeven zodat niet null is), of als de distance die berekend is kleiner is dan de distance toegekend aan closest, dan wordt object gereturned dat zowel het plant object als de distance bevat
+        //de reduce zal deze dan in closest steken en opnieuw over de array loopen om met dezelfde condities, zodra deze heel de array over gelooped is zal de beste closest terug
+        //gestuurd worden en in closestPlantWithDistance gestoken worden (ik heb geprobeerd met return closest?.plant als laatste return, maar dit werkte niet, ik veronderstel
+        //doordat als hij niet in de if loop terechtkomt hij dit gebruikt om opnieuw te loopen en er geen distancePlant meer is)
+        const closestPlantWithDistance = this.plants.reduce((closest, plant) => {
+          const distancePlant = Math.abs(plant.xCoord - this.herbivores[i].xCoord) + Math.abs(plant.zCoord - this.herbivores[i].zCoord);
+          if(closest === undefined || distancePlant<closest.distancePlant){
+            return { plant, distancePlant}
+          }
+          return closest;
+          }, undefined
+        )
+        const closestPlant = closestPlantWithDistance?.plant
+        console.log(this.herbivores[i].id + " + " +closestPlant.id)
+
+
+        
         if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) === 0 && ((p.zCoord - this.herbivores[i].zCoord) <=5 && (p.zCoord - this.herbivores[i].zCoord)>0))) {
           moveDirection = 2;
         } else
         if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) === 0 && ((p.zCoord - this.herbivores[i].zCoord) >=-5 && (p.zCoord - this.herbivores[i].zCoord)<0))) {
-          moveDirection = 3;
-        } else
+          moveDirection = 3;} 
+        else
         if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) <=5 && (p.xCoord - this.herbivores[i].xCoord)>0 && ((p.zCoord - this.herbivores[i].zCoord) <=5 && (p.zCoord - this.herbivores[i].zCoord)>=-5))) {
           moveDirection = 0;
         } else
         if(this.plants.some(p => (p.xCoord - this.herbivores[i].xCoord) >=-5 && (p.xCoord - this.herbivores[i].xCoord)<0&& ((p.zCoord - this.herbivores[i].zCoord) <=5 && (p.zCoord - this.herbivores[i].zCoord)>=-5))) {
           moveDirection = 1;
         }
+        
         switch(moveDirection){
           case 0 : 
             this.herbivores[i].xCoord = Math.min(29, this.herbivores[i].xCoord+1);
