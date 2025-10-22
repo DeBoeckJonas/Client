@@ -77,33 +77,32 @@ export class Simulation implements AfterViewInit{
     setInterval(():void => {
       this.cdr.markForCheck();
     })
-    
+
     //create entity functie voor alle models
-    function createEntity(startAmount:number, entityClass:typeof EntityModel, entityArray:Array<EntityModel>, scene:THREE.Scene){
+    function createEntity(entityClass:typeof EntityModel, entityArray:Array<EntityModel>, scene:THREE.Scene){
+      let x = Math.floor(Math.random()*30);
+      let z = Math.floor(Math.random()*30);     
+      if(!entityArray.some(h => h.xCoord === x && h.zCoord === z)){
+        const entity = new entityClass(x,z)
+        entity.createEntity(scene)
+        entityArray.push(entity);
+      } else { console.log("spot already taken") }
+    }
+    
+    //create entities op start
+    function createEntityStart(startAmount:number, entityClass:typeof EntityModel, entityArray:Array<EntityModel>, scene:THREE.Scene){
       for(let i = 0; i<startAmount; i++){
-        let x = Math.floor(Math.random()*30);
-        let z = Math.floor(Math.random()*30);     
-        if(!entityArray.some(h => h.xCoord === x && h.zCoord === z)){
-          const entity = new entityClass(x,z)
-          entity.createEntity(scene)
-          entityArray.push(entity);
-        }
+        createEntity(entityClass, entityArray, scene)
       }
     }
 
     //entities aanmaken
-    createEntity(this.startAmountHerb, Herbivore, this.herbivores, this.#scene);
-    createEntity(this.startAmountPlants, Plant, this.plants, this.#scene);
+    createEntityStart(this.startAmountHerb, Herbivore, this.herbivores, this.#scene);
+    createEntityStart(this.startAmountPlants, Plant, this.plants, this.#scene);
 
     //plant op grid plaatsen
     setInterval(():void => {
-    this.x = Math.floor(Math.random()*30);
-    this.z = Math.floor(Math.random()*30);
-    if(!this.plants.some(p => p.xCoord === this.x && p.zCoord === this.z)){
-      this.plant = new Plant(this.x , this.z);
-      this.plant.createEntity(this.#scene);
-      this.plants.push(this.plant);
-    } else { console.log("spot for plant taken")}
+    createEntity(Plant, this.plants, this.#scene);
     }, this.intervalTimePlant); 
 
     //setinterval voor herbivoren, apart van plant voor eventueel andere seconden per game tick te gebruiken nadien
@@ -182,8 +181,7 @@ export class Simulation implements AfterViewInit{
         //reproductie
         if(this.herbivores[i].reproduction<=0){
           this.herbivore = this.herbivores[i].reproduce();
-          this.herbivore.createEntity(this.#scene);
-          this.herbivores.push(this.herbivore);
+          createEntity(Herbivore, this.herbivores, this.#scene);
         }
       console.log(this.herbivores[i].id +" hunger: " + this.herbivores[i].hunger)
       console.log(this.herbivores[i].id +" reproduction: " + this.herbivores[i].reproduction)

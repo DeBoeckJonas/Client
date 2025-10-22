@@ -68,8 +68,6 @@ export class Herbivore implements EntityModel {
 
     reproduce() {
         this.reproduction = 5;
-        const baby = new Herbivore(Math.floor(Math.random()*30),Math.floor(Math.random()*30));
         console.log(`Herbivore ${this.id} born`);
-        return baby;
     }
 }
