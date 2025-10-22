@@ -1,11 +1,13 @@
+import { TemplateEntity } from '@angular/compiler';
 import * as THREE from 'three';
+import { EntityModel } from './entity.model';
 
 
-export class Herbivore {
+export class Herbivore implements EntityModel {
 
     //variabelen
     gridsize!:number;
-    herbCube!: THREE.Mesh;
+    entityCube!: THREE.Mesh;
     static #lastId = 0;
     #id:number;
     xCoord!:number;
@@ -13,6 +15,7 @@ export class Herbivore {
     hunger!:number;
     reproduction!:number;
     gainedFromFood!: number;
+
     
     constructor(x:number, z:number) {
         this.#id = Herbivore.#lastId++;
@@ -20,24 +23,25 @@ export class Herbivore {
         this.zCoord = z;
     }
 
-    createHerbivore(scene:THREE.Scene):Herbivore{
+
+    createEntity(scene:THREE.Scene):Herbivore{
         this.hunger = 20;
         this.reproduction = 5;
         this.gainedFromFood = 10;
         this.gridsize = 30;
-        this.herbCube = new THREE.Mesh(
+        this.entityCube = new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
             new THREE.MeshBasicMaterial({color:0xff8c00})
         )
-        this.herbCube.position.set(this.xCoord-this.gridsize/2+0.5,0.6, this.zCoord-this.gridsize/2+0.5);
-        scene.add(this.herbCube);
+        this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,0.6, this.zCoord-this.gridsize/2+0.5);
+        scene.add(this.entityCube);
         return this;
     }
 
     moveHerbivore(scene:THREE.Scene){
-        scene.remove(this.herbCube);
-        this.herbCube.position.set(this.xCoord-this.gridsize/2+0.5,0.6, this.zCoord-this.gridsize/2+0.5);
-        scene.add(this.herbCube);
+        scene.remove(this.entityCube);
+        this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,0.6, this.zCoord-this.gridsize/2+0.5);
+        scene.add(this.entityCube);
     }
 
     get id() {
@@ -51,8 +55,8 @@ export class Herbivore {
         }
     }
     die() : void {
-        if (this.herbCube.parent) {
-            this.herbCube.parent.remove(this.herbCube);
+        if (this.entityCube.parent) {
+            this.entityCube.parent.remove(this.entityCube);
         }
         console.log(`Herbivore ${this.id} has died`);
     }

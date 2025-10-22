@@ -9,6 +9,7 @@ import { SimulationView } from "../../components/simulation-view/simulation-view
 import { StatsPanel } from "../../components/stats-panel/stats-panel";
 import { Plant } from '../../models/plant.model';
 import { Herbivore } from '../../models/herbivore.model';
+import { EntityModel } from '../../models/entity.model';
 
 @Component({
   selector: 'app-simulation',
@@ -34,7 +35,12 @@ export class Simulation implements AfterViewInit{
   startAmountHerb!: number;
   startAmountPlants!: number;
   herbivoreSearchRange!: number;
+  x!: number;
+  z!: number;
+  intervalTimePlant!: number;
+  intervalTimeHerbivore!: number;
 
+  //nodig voor markForCheck
   constructor(private cdr: ChangeDetectorRef) {}
   
   //scene definieren en grid object aanmaken + toevoegen
@@ -61,46 +67,44 @@ export class Simulation implements AfterViewInit{
     this.#scene.add(this.#grid.mesh);
     this.#scene.add(this.#grid.grid);
 
-
-    //aantal planten in het begin zetten
-    // MOET AANGEPAST WORDEN NAAR USER INPUT
+    //startwaarden -- AANPASSEN NAAR USER INPUT
+    this.startAmountHerb = 3;
     this.startAmountPlants = 10;
-    for(let i = 0; i<this.startAmountPlants; i++){
-      let x = Math.floor(Math.random()*30);
-      let z = Math.floor(Math.random()*30);
-      if(!this.plants.some(p => p.xCoord === x && p.zCoord === z)){
-        this.plant = new Plant(x , z);
-        this.plant.createPlant(this.#scene);
-        this.plants.push(this.plant);
+    this.intervalTimePlant = 2 * 1000;
+    this.intervalTimeHerbivore = 3 * 1000;
+
+    //door push wordt geen nieuwe array-referentie aangemaakt en wordt deze overgeslagen bij checks, via markforcheck wordt deze toch ook telkens gechecked door angular bij detection change cycle en update de @input automatisch
+    setInterval(():void => {
+      this.cdr.markForCheck();
+    })
+    
+    //create entity functie voor alle models
+    function createEntity(startAmount:number, entityClass:typeof EntityModel, entityArray:Array<EntityModel>, scene:THREE.Scene){
+      for(let i = 0; i<startAmount; i++){
+        let x = Math.floor(Math.random()*30);
+        let z = Math.floor(Math.random()*30);     
+        if(!entityArray.some(h => h.xCoord === x && h.zCoord === z)){
+          const entity = new entityClass(x,z)
+          entity.createEntity(scene)
+          entityArray.push(entity);
+        }
       }
     }
+
+    //entities aanmaken
+    createEntity(this.startAmountHerb, Herbivore, this.herbivores, this.#scene);
+    createEntity(this.startAmountPlants, Plant, this.plants, this.#scene);
 
     //plant op grid plaatsen
     setInterval(():void => {
-    let x = Math.floor(Math.random()*30);
-    let z = Math.floor(Math.random()*30);
-    if(!this.plants.some(p => p.xCoord === x && p.zCoord === z)){
-      this.plant = new Plant(x , z);
-      this.plant.createPlant(this.#scene);
+    this.x = Math.floor(Math.random()*30);
+    this.z = Math.floor(Math.random()*30);
+    if(!this.plants.some(p => p.xCoord === this.x && p.zCoord === this.z)){
+      this.plant = new Plant(this.x , this.z);
+      this.plant.createEntity(this.#scene);
       this.plants.push(this.plant);
-
-      //door push wordt geen nieuwe array-referentie aangemaakt en wordt deze overgeslagen bij checks, via markforcheck wordt deze toch ook telkens gechecked door angular bij detection change cycle en update de @input automatisch
-      this.cdr.markForCheck();
     } else { console.log("spot for plant taken")}
-    }, 2000);
-    
-    //aantal herbivoren in het begin zetten
-    // MOET AANGEPAST WORDEN NAAR USER INPUT
-    this.startAmountHerb = 3;
-    for(let i = 0; i<this.startAmountHerb; i++){
-      let x = Math.floor(Math.random()*30);
-      let z = Math.floor(Math.random()*30);
-      if(!this.herbivores.some(h => h.xCoord === x && h.zCoord === z)){
-        this.herbivore = new Herbivore(Math.floor(Math.random()*30),Math.floor(Math.random()*30))
-        this.herbivore.createHerbivore(this.#scene)
-        this.herbivores.push(this.herbivore);
-      }
-    }
+    }, this.intervalTimePlant); 
 
     //setinterval voor herbivoren, apart van plant voor eventueel andere seconden per game tick te gebruiken nadien
     setInterval(() => {
@@ -114,7 +118,7 @@ export class Simulation implements AfterViewInit{
         const plant = this.plants.find(p=>p.xCoord === this.herbivores[i].xCoord && p.zCoord === this.herbivores[i].zCoord);
         if(plant ){
           this.herbivores[i].eat();
-          this.#scene.remove(plant.plantCube);
+          this.#scene.remove(plant.entityCube);
           this.plants = this.plants.filter(p => p !== plant);
         }
         //bewegen
@@ -178,13 +182,13 @@ export class Simulation implements AfterViewInit{
         //reproductie
         if(this.herbivores[i].reproduction<=0){
           this.herbivore = this.herbivores[i].reproduce();
-          this.herbivore.createHerbivore(this.#scene);
+          this.herbivore.createEntity(this.#scene);
           this.herbivores.push(this.herbivore);
         }
       console.log(this.herbivores[i].id +" hunger: " + this.herbivores[i].hunger)
       console.log(this.herbivores[i].id +" reproduction: " + this.herbivores[i].reproduction)
       }
-    }, 3000);
+    }, this.intervalTimeHerbivore);
   
 
 
