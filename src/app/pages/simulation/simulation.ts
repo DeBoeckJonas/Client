@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import * as THREE from 'three';
 import { Grid } from '../../models/grid.model';
@@ -26,7 +26,7 @@ export class Simulation implements AfterViewInit{
   plant!: Plant;
   plants = new Array;
 
-
+  constructor(private cdr: ChangeDetectorRef) {}
   
   //scene definieren en grid object aanmaken + toevoegen
   ngAfterViewInit(): void {
@@ -60,6 +60,10 @@ export class Simulation implements AfterViewInit{
       this.plant = new Plant(x , z);
       this.plant.createPlant(this.#scene);
       this.plants.push(this.plant);
+      
+      //door push wordt geen nieuwe array-referentie aangemaakt en wordt deze overgeslagen bij checks, via markforcheck wordt deze toch ook telkens gechecked door angular bij detection change cycle en update de @input automatisch
+      this.cdr.markForCheck();
+
       console.log(this.plant.id)
     } else { console.log("taken")}
     }, 3000);
