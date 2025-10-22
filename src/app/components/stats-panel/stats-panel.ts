@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export class StatsPanel {
   @Input() plantAmount!: number;
+  @Input() herbivoreAmount!: number;
 }
