@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-stats-panel',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './stats-panel.css'
 })
 export class StatsPanel {
-
+  @Input() plantAmount!: number;
 }
