@@ -130,19 +130,19 @@ export class Simulation implements AfterViewInit{
         }
         switch(moveDirection){
           case 0 : 
-            this.herbivores[i].xCoord+=1;
+            this.herbivores[i].xCoord = Math.min(29, this.herbivores[i].xCoord+1);
             this.herbivores[i].moveHerbivore(this.#scene);
             break;
           case 1 : 
-            this.herbivores[i].xCoord-=1;
+            this.herbivores[i].xCoord = Math.max(0, this.herbivores[i].xCoord-1);
             this.herbivores[i].moveHerbivore(this.#scene);
             break;
           case 2 : 
-            this.herbivores[i].zCoord+=1;
+            this.herbivores[i].zCoord =Math.min(29, this.herbivores[i].zCoord + 1);
             this.herbivores[i].moveHerbivore(this.#scene);
             break;
           case 3 : 
-            this.herbivores[i].zCoord-=1;
+            this.herbivores[i].zCoord = Math.max(0, this.herbivores[i].zCoord-1);
             this.herbivores[i].moveHerbivore(this.#scene);
             break;
         }
