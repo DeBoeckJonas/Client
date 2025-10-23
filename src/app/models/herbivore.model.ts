@@ -1,9 +1,8 @@
-import { TemplateEntity } from '@angular/compiler';
 import * as THREE from 'three';
-import { EntityModel } from './entity.model';
+import { AnimalModel } from './animal.model';
 
 
-export class Herbivore implements EntityModel {
+export class Herbivore implements AnimalModel {
 
     //variabelen
     gridsize!:number;
@@ -31,14 +30,14 @@ export class Herbivore implements EntityModel {
         this.gridsize = 30;
         this.entityCube = new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
-            new THREE.MeshBasicMaterial({color:0xff8c00})
+            new THREE.MeshBasicMaterial({color:0x0000FF})
         )
         this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,0.6, this.zCoord-this.gridsize/2+0.5);
         scene.add(this.entityCube);
         return this;
     }
 
-    moveHerbivore(scene:THREE.Scene){
+    move(scene:THREE.Scene){
         scene.remove(this.entityCube);
         this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,0.6, this.zCoord-this.gridsize/2+0.5);
         scene.add(this.entityCube);

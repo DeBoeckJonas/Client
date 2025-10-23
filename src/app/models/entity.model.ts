@@ -6,6 +6,7 @@ export class EntityModel {
       static #lastId:number;
       xCoord!:number;
       zCoord!:number;
+      id!:number;
 
   
       constructor(x:number, z:number) {
