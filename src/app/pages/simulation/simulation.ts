@@ -175,8 +175,6 @@ export class Simulation implements AfterViewInit{
         if (!closestTarget || closestTargetDistance === undefined) {
           continue; // or just 'return' if outside loop
         }
-        if(entityArray === this.carnivores){
-        console.log(entityArray[i].id + " + " +closestTarget?.id + " at distance " + closestTargetDistance)}
 
         //bewegingslogica voor Target in range 5
         if(closestTargetDistance<=searchRange){
@@ -222,8 +220,10 @@ export class Simulation implements AfterViewInit{
           entityArray[i].reproduce();
           this.createEntity(entityClass, entityArray, this.#scene);
         }
-      console.log(entityArray[i].id +" hunger: " + entityArray[i].hunger)
-      console.log(entityArray[i].id +" reproduction: " + entityArray[i].reproduction)
+      if(entityArray === this.carnivores){
+      console.log("carnivore " + entityArray[i].id +" reproduction: " + entityArray[i].reproduction)}
+      else if(entityArray === this.herbivores){
+      console.log("herbivore " + entityArray[i].id +" reproduction: " + entityArray[i].reproduction)}
     }
   }
 
