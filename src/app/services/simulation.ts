@@ -1,3 +1,8 @@
+//wat geprobeerd, collision van herbivoren lijkt mij veel, omslachtig werk, voorlopig kunnen ze in hetzelfde vakje komen (ik zie niet meteen een andere manier dan eerst het
+//vakje waar ze naartoe gaan op te slaan in een array, deze te vergelijken en als er gelijke waarden zijn, nieuwe berekeningen te maken) dit als eventuele extra toevoeging later
+
+//momenteel kunnen prooien nog ontsnappen als ze op andere gametick snelheid zitten, ze worden tick erna dan gevangen, dus geen probleem, maar eventueel latere update
+
 import * as THREE from 'three';
 import { Injectable } from '@angular/core';
 import { Plant } from '../models/plant.model';

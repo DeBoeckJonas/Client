@@ -3,3 +3,34 @@
     <div #playField class="playfield-container"></div>
     <app-stats-panel [plantAmount]="plantAmount" [herbivoreAmount]="herbivoreAmount" [carnivoreAmount]="carnivoreAmount"></app-stats-panel>
 </div>
+
+<div class="detailInfo">
+    <select [(ngModel)]="selectedType">
+        <option [ngValue]="'herbivore'">Herbivore</option>
+        <option [ngValue]="'carnivore'">Carnivore</option>
+    </select>
+
+    @if(selectedType === 'herbivore'){
+    <div>
+        @for(h of simulationServiceForHTML.herbivores; track h.id){
+            <button (click)="selectedAnimal = h">
+                Herbivore {{ h.id }}
+            </button>
+        }
+    </div>
+    }
+    @if(selectedType === 'carnivore'){
+    <div>
+        @for(c of simulationServiceForHTML.carnivores; track c.id){
+            <button (click)="selectedAnimal = c">
+                Carnivore {{ c.id }}
+            </button>
+        }
+    </div>
+    }
+    <ng-container>
+        <app-entity-detail
+            [animal]="selectedAnimal">
+        </app-entity-detail>
+    </ng-container>
+</div>

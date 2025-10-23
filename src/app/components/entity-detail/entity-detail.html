@@ -1,1 +1,7 @@
-<p>entity-detail works!</p>
+<div>
+    @if(animal){
+        <p>Animal id : {{ animal.id }}</p>
+        <p>Animal hunger : {{ animal.hunger| statsToPercentPipe:100 | number:'1.0-0' }}%</p>
+        <p>Animal reproduction : {{ animal.reproduction | statsToPercentPipe:100 | number:'1.0-0' }}%</p>
+    }
+</div>

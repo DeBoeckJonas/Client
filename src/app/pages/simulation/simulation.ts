@@ -1,8 +1,3 @@
-//wat geprobeerd, collision van herbivoren lijkt mij veel, omslachtig werk, voorlopig kunnen ze in hetzelfde vakje komen (ik zie niet meteen een andere manier dan eerst het
-//vakje waar ze naartoe gaan op te slaan in een array, deze te vergelijken en als er gelijke waarden zijn, nieuwe berekeningen te maken) dit als eventuele extra toevoeging later
-
-//momenteel kunnen prooien nog ontsnappen als ze op andere gametick snelheid zitten, ze worden tick erna dan gevangen, dus geen probleem, maar eventueel latere update
-
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import * as THREE from 'three';
@@ -13,10 +8,12 @@ import { Plant } from '../../models/plant.model';
 import { Herbivore } from '../../models/herbivore.model';
 import { Carnivore } from '../../models/carnivore.model';
 import { SimulationService } from '../../services/simulation';
+import { EntityDetail } from "../../components/entity-detail/entity-detail";
+import { AnimalModel } from '../../models/animal.model';
 
 @Component({
   selector: 'app-simulation',
-  imports: [FormsModule, SimulationView, StatsPanel],
+  imports: [FormsModule, SimulationView, StatsPanel, EntityDetail],
   templateUrl: './simulation.html',
   styleUrl: './simulation.css'
 })
@@ -31,11 +28,20 @@ export class Simulation implements AfterViewInit{
   #renderer!: THREE.WebGLRenderer;
   #camera!: THREE.PerspectiveCamera;
   #grid!: Grid;
+  selectedType: 'herbivore' | 'carnivore' | null = null;
+  selectedAnimal!: AnimalModel;
   
   
 
   //nodig voor markForCheck, alsook simulation service meegeven
   constructor(private simulationService: SimulationService, private cdr: ChangeDetectorRef) {}
+
+  get simulationServiceForHTML(){
+    return this.simulationService;
+  }
+  get herbivoreList(){
+    return this.simulationService.herbivores;
+  }
   
   //scene definieren en grid object aanmaken + toevoegen
   ngAfterViewInit(): void {
