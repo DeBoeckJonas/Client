@@ -1,0 +1,17 @@
+nav {
+    width: 100vw;
+    height: 10vh;
+    z-index: 5;
+    background: linear-gradient(135deg, #353535, #0f0f0f, #353535);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    border-bottom: 2px solid;
+    border-image: linear-gradient(135deg, #ffffff, #00ffcc, #ffffff) 1;
+    font-family: 'Orbitron', sans-serif;
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc;
+    z-index: 10;
+    box-sizing: border-box;
+}
