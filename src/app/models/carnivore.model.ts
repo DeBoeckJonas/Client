@@ -59,6 +59,7 @@ export class Carnivore implements AnimalModel {
     eat() : void {
         this.hunger = 40;
         this.reproduction -= 1;
+        console.log(`Carnivore ${this.id} has eaten a herbivore`);
     }
     
     reproduce() {
