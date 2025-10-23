@@ -25,7 +25,7 @@ export class Herbivore implements AnimalModel {
 
     createEntity(scene:THREE.Scene):Herbivore{
         this.hunger = 20;
-        this.reproduction = 5;
+        this.reproduction = 0;
         this.gainedFromFood = 10;
         this.gridsize = 30;
         this.entityCube = new THREE.Mesh(
@@ -62,11 +62,11 @@ export class Herbivore implements AnimalModel {
 
     eat() : void {
         this.hunger = 20;
-        this.reproduction -= 1;
+        this.reproduction += 1;
     }
 
     reproduce() {
-        this.reproduction = 5;
+        this.reproduction = 0;
         console.log(`Herbivore ${this.id} born`);
     }
 }

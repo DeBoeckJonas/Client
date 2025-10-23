@@ -16,9 +16,12 @@ app-simulation-view {
 }
 .detailInfo{
     width:10vw;
-    height:50vh;
+    height:70vh;
     top: 10vh;
     position: fixed;
     background-color: black;
     z-index: 15;
+}
+h1, p {
+    color:white;
 }

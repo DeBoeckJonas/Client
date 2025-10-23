@@ -156,7 +156,7 @@ export class SimulationService {
           break;
       }
       //reproductie
-      if(entityArray[i].reproduction<=0){
+      if(entityArray[i].reproduction>=5){
         entityArray[i].reproduce();
         this.createEntity(entityClass, entityArray, scene);
       }
