@@ -41,6 +41,9 @@ export class SimulationService {
   carnTickInput!:number;
   herbTickInput!:number;
   plantTickInput!:number;
+  plantInterval!: ReturnType<typeof setInterval>;
+  herbInterval!: ReturnType<typeof setInterval>;
+  carnInterval!: ReturnType<typeof setInterval>;
 
   constructor() {
     
@@ -58,16 +61,16 @@ export class SimulationService {
 
   //intervals in method gestoken, zodat simulation view deze makkelijk kan aanroepen
   intervalCreation(scene:THREE.Scene){
-  setInterval(():void => {
-    this.createEntity(Plant, this.plants, scene);
+    this.plantInterval = setInterval(():void => {
+      this.createEntity(Plant, this.plants, scene);
     }, this.intervalTimePlant); 
 
     //setinterval voor herbivoren, apart van plant voor eventueel andere seconden per game tick te gebruiken nadien
-    setInterval(() => {
+    this.herbInterval = setInterval(() => {
       this.move(Herbivore, this.herbivores, this.plants, this.herbivoreSearchRange, scene)
     }, this.intervalTimeHerbivore);
 
-    setInterval(() => {
+    this.carnInterval = setInterval(() => {
       this.move(Carnivore, this.carnivores, this.herbivores, this.carnivoreSearchRange, scene)
     }, this.intervalTimeCarnivore);
   }

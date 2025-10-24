@@ -85,6 +85,21 @@ export class Simulation implements AfterViewInit{
   }
   
   start() {
+    //intervals leegmaken, was oplossing voor raar gedrag bij verlaten en terug navigeren naar simulation route
+    clearInterval(this.simulationService.carnInterval)
+    clearInterval(this.simulationService.herbInterval)
+    clearInterval(this.simulationService.plantInterval)
+
+    //reset scene
+    this.simulationService.plants = [];
+    this.simulationService.herbivores = [];
+    this.simulationService.carnivores = [];
+
+    for(let i=0; i<this.#scene.children.length;i++){
+      this.#scene.remove(this.#scene.children[i])
+    }
+    this.#scene.add(this.#grid.mesh);
+    this.#scene.add(this.#grid.grid);
     this.simulationService.setStartValues()
     //entities aanmaken
     this.simulationService.createEntityStart(this.simulationService.startAmountHerb, Herbivore, this.simulationService.herbivores, this.#scene);
