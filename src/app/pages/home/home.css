@@ -1,4 +1,5 @@
 .homeContainer{
+    color:white;
     height: 90vh;
     background: linear-gradient(135deg, #535353, #0f0f0f, #535353);
     border-top: 2px solid;
@@ -34,6 +35,18 @@ button{
     box-shadow: 5px 5px #585858;
 }
 button:hover{
-    background-color: #535353;
-    box-shadow: 5px 5px #ffffff;
+    background-color: #585858;
+    box-shadow: 5px 5px aliceblue;
+}
+.startForm{
+    position:fixed;
+    top:20vh;
+    height:60vh;
+    left:30vw;
+    width: 40vw;
+    background-color: #0f0f0f;
+}
+.formButton{
+    margin-top: 1vh;
+    width: 30vw;
 }

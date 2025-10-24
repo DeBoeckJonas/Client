@@ -73,6 +73,19 @@ export class Simulation implements AfterViewInit{
       this.cdr.markForCheck();
     })
 
+    if(this.simulationService.isStarted){
+      this.start();
+    }
+  }
+
+  //rendered de scene en grid
+  animate = () => {
+    requestAnimationFrame(this.animate);
+    this.#renderer.render(this.#scene, this.#camera);
+  }
+  
+  start() {
+    this.simulationService.setStartValues()
     //entities aanmaken
     this.simulationService.createEntityStart(this.simulationService.startAmountHerb, Herbivore, this.simulationService.herbivores, this.#scene);
     this.simulationService.createEntityStart(this.simulationService.startAmountPlants, Plant, this.simulationService.plants, this.#scene);
@@ -82,12 +95,6 @@ export class Simulation implements AfterViewInit{
     this.simulationService.intervalCreation(this.#scene)
   }
 
-  //rendered de scene en grid
-  animate = () => {
-    requestAnimationFrame(this.animate);
-    this.#renderer.render(this.#scene, this.#camera);
-  }
-  
   //geeft elementen mee aan DOM element zodat componenten deze kunnen gebruiken
   get fieldCamera(): THREE.PerspectiveCamera {
     return this.#camera;

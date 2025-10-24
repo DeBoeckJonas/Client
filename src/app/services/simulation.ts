@@ -32,16 +32,28 @@ export class SimulationService {
   herbivores = new Array;
   carnivore! : Carnivore;
   carnivores = new Array;
+  isStarted = false;
+  startAmountPlantInput!: number;
+  startAmountHerbInput!: number;
+  startAmountCarnInput!: number;
+  herbSearchRangeInput!: number;
+  carnSearchRangeInput!: number;
+  carnTickInput!:number;
+  herbTickInput!:number;
+  plantTickInput!:number;
 
   constructor() {
-    this.startAmountHerb = 5;
-    this.startAmountPlants = 10;
-    this.startAmountCarnivores = 1;
-    this.intervalTimePlant = 2000;
-    this.intervalTimeHerbivore = 3000;
-    this.intervalTimeCarnivore = 2000;
-    this.herbivoreSearchRange = 5;
-    this.carnivoreSearchRange = 20;
+    
+  }
+  setStartValues(){
+    this.startAmountHerb = this.startAmountHerbInput;
+    this.startAmountPlants = this.startAmountPlantInput;
+    this.startAmountCarnivores = this.startAmountCarnInput;
+    this.intervalTimePlant = this.plantTickInput*1000;
+    this.intervalTimeHerbivore = this.herbTickInput*1000;
+    this.intervalTimeCarnivore = this.carnTickInput*1000;
+    this.herbivoreSearchRange = this.herbSearchRangeInput;
+    this.carnivoreSearchRange = this.carnSearchRangeInput;
   }
 
   //intervals in method gestoken, zodat simulation view deze makkelijk kan aanroepen
