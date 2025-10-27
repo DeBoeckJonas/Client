@@ -10,6 +10,8 @@ import { Carnivore } from '../../models/carnivore.model';
 import { SimulationService } from '../../services/simulation';
 import { EntityDetail } from "../../components/entity-detail/entity-detail";
 import { AnimalModel } from '../../models/animal.model';
+import { Stats } from '../../services/stats';
+
 
 @Component({
   selector: 'app-simulation',
@@ -34,7 +36,7 @@ export class Simulation implements AfterViewInit{
   
 
   //nodig voor markForCheck, alsook simulation service meegeven
-  constructor(private simulationService: SimulationService, private cdr: ChangeDetectorRef) {}
+  constructor(private simulationService: SimulationService, private stats:Stats, private cdr: ChangeDetectorRef) {}
 
   get simulationServiceForHTML(){
     return this.simulationService;
@@ -71,6 +73,9 @@ export class Simulation implements AfterViewInit{
     //via markforcheck wordt deze toch ook telkens gechecked door angular bij detection change cycle en update de @input automatisch
     setInterval(():void => {
       this.cdr.markForCheck();
+      if(this.simulationService.isStarted){
+      this.stats.calculateStats();
+      }
     })
 
     if(this.simulationService.isStarted){
@@ -108,6 +113,8 @@ export class Simulation implements AfterViewInit{
     
     //entities op grid plaatsen
     this.simulationService.intervalCreation(this.#scene)
+    this.stats.setTurnsToTicks();
+    this.stats.startTurnsCounter();
   }
 
   //geeft elementen mee aan DOM element zodat componenten deze kunnen gebruiken

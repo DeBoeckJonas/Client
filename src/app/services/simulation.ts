@@ -44,6 +44,8 @@ export class SimulationService {
   plantInterval!: ReturnType<typeof setInterval>;
   herbInterval!: ReturnType<typeof setInterval>;
   carnInterval!: ReturnType<typeof setInterval>;
+  totalHerb!: number;
+  totalCarn!: number;
 
   constructor() {
     
@@ -57,6 +59,8 @@ export class SimulationService {
     this.intervalTimeCarnivore = this.carnTickInput*1000;
     this.herbivoreSearchRange = this.herbSearchRangeInput;
     this.carnivoreSearchRange = this.carnSearchRangeInput;
+    this.totalHerb = this.startAmountHerbInput;
+    this.totalCarn = this.startAmountCarnInput;
   }
 
   //intervals in method gestoken, zodat simulation view deze makkelijk kan aanroepen
@@ -174,6 +178,11 @@ export class SimulationService {
       if(entityArray[i].reproduction>=5){
         entityArray[i].reproduce();
         this.createEntity(entityClass, entityArray, scene);
+        if(entityClass === Herbivore){
+          this.totalHerb++;
+        } else if(entityClass === Carnivore){
+          this.totalCarn++;
+        }
       }
     }
   }
