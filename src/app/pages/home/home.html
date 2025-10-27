@@ -1,30 +1,8 @@
 <div class="homeContainer">
     <h1>Welcome to the ecology simulator</h1>
     <div class="buttonContainer">
-        <button (click)="showStartForm()">(Re)start</button>
+        <button (click)="triggerSettingsForm()">(Re)start</button>
         <button>Statistics</button>
     </div>
-    @if(startForm){
-    <div class="startForm">
-        <h2>Enter start values</h2>
-        <form>
-            <label for="plantAmount" >Start amount of plants</label><br>
-            <input type="number" #plantAmount><br>
-            <label for="herbivoreAmount">Start amount of herbivores</label><br>
-            <input type="number" #herbAmount><br>
-            <label for="carnivoreAmount">Start amount of carnivores</label><br>
-            <input type="number" #carnAmount><br>
-            <label for="herbivoreSearchRange">Herbivores search range</label><br>
-            <input type="number" #herbSearchRange><br>
-            <label for="carnivoreSearchRange">Carnivores search range</label><br>
-            <input type="number" #carnSearchRange><br>
-            <label for="herbivoreTicks">Time between herbivore moves (in seconds)</label><br>
-            <input type="number" #herbTicks><br>
-            <label for="carnivoreTicks">Time between carnivore moves (in seconds)</label><br>
-            <input type="number" #carnTicks><br>
-            <label for="plantTicks">Time between plant spawns (in seconds)</label><br>
-            <input type="number" #plantTicks><br>
-            <button class="formButton" (click)="start(plantAmount.value, herbAmount.value, carnAmount.value, herbSearchRange.value, carnSearchRange.value, herbTicks.value, carnTicks.value, plantTicks.value)" routerLink="/simulation">Submit</button>
-        </form>
-    </div>}
+    <app-settings-form></app-settings-form>
 </div>
