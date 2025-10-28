@@ -25,7 +25,7 @@ export class Stats {
   }
 
   startTurnsCounter(){
-    if(this.simulationService.isStarted){
+    if(this.simulationService.isStarted && !this.turnsSurvivedInterval){
       this.turnsSurvivedInterval = setInterval(():void =>{
         this.turnsSurvived++;
         console.log(this.turnsSurvived);
@@ -43,8 +43,12 @@ export class Stats {
     }
     if(this.simulationService.carnivores.length === 0){
       this.simulationService.isStarted = false;
-      this.totalCarnivores = this.simulationService.totalCarn;
-      this.totalHerbivores = this.simulationService.totalHerb;
+      if(this.totalCarnivores<this.simulationService.totalCarn){
+        this.totalCarnivores = this.simulationService.totalCarn;
+      }
+      if(this.totalHerbivores<this.simulationService.totalHerb){
+        this.totalHerbivores = this.simulationService.totalHerb;
+      }
       clearInterval(this.turnsSurvivedInterval);
       console.log(this.maxCarnivoresAtOnce + " carn " + this.maxHerbivoresAtOnce + " herb " + this.turnsSurvived + " survived " + this.totalCarnivores + " max carn " + this.totalHerbivores + " max herb");
     }
