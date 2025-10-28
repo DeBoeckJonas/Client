@@ -15,7 +15,6 @@ export class SettingsForm {
   startForm = false;
   showStartForm(){
     this.startForm = true;
-    console.log(this.startForm)
   }
 
   start(plantAmount:string, herbAmount:string, carnAmount:string, herbSearchRange:string, carnSearchRange:string, herbTicks:string, carnTicks:string, plantTicks:string):void{
@@ -27,7 +26,6 @@ export class SettingsForm {
     this.simulationService.carnTickInput = parseInt(carnTicks);
     this.simulationService.herbTickInput = parseInt(herbTicks);
     this.simulationService.plantTickInput = parseInt(plantTicks);
-
     this.simulationService.isStarted = true;
     this.startForm = false;
   }

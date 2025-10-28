@@ -1,0 +1,10 @@
+@if(highscores){
+<div class="highscores">
+    <h1>HIGHSCORES</h1>
+    <p>highest amount of turns survived : {{turnsSurvived}}</p>
+    <p>highest amount of herbivores alive at once : {{maxHerbivoresAtOnce}}</p>
+    <p>highest amount of carnivores alive at once : {{maxCarnivoresAtOnce}}</p>
+    <p>total amount of herbivores in one game : {{totalHerbivores}}</p>
+    <p>total amount of carnivores in one game : {{totalCarnivores}}</p>
+    <button (click)="close()">close</button>
+</div>}

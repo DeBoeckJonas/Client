@@ -2,7 +2,9 @@
     <h1>Welcome to the ecology simulator</h1>
     <div class="buttonContainer">
         <button (click)="triggerSettingsForm()">(Re)start</button>
-        <button>Statistics</button>
+        <button (click)="triggerHighscores()">Highscores</button>
     </div>
     <app-settings-form></app-settings-form>
+    <app-highscores></app-highscores>
+
 </div>
