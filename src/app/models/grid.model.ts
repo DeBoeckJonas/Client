@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+//model voor de grid
 export class Grid {
     //variabelen
     geometry!: THREE.BoxGeometry;

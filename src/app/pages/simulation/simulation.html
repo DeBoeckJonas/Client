@@ -7,11 +7,13 @@
 <div class="detailInfo">
     <h1>Entity details</h1>
     <p>select species from dropdown</p>
+    <!-- banana in a box om het diertype te selecteren en deze waarde te kunnen gebruiken -->
     <select [(ngModel)]="selectedType">
         <option [ngValue]="'herbivore'">Herbivore</option>
         <option [ngValue]="'carnivore'">Carnivore</option>
     </select>
-
+    <!-- als herbivoor geselecteerd, dan gaat de for de herbivoren/carnivoren lijst ophalen uit simulationservice, via track worden deze dan op hun id opgehaald om te tonen -->
+    <!-- bij click opeen dier wordt de herbivoor/carnivoor geselecteerd met overeenkomstig id -->
     @if(selectedType === 'herbivore'){
     <div>
         @for(h of simulationServiceForHTML.herbivores; track h.id){
@@ -30,6 +32,7 @@
         }
     </div>
     }
+    <!-- geselecteerd dier wordt doorgegeven aan entity detail, die dit dier's stats dan rendered -->
     <ng-container>
         <app-entity-detail
             [animal]="selectedAnimal">

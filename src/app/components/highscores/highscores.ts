@@ -9,6 +9,7 @@ import { Stats } from '../../services/stats';
   styleUrl: './highscores.css'
 })
 export class Highscores {
+  // constructor en getstats nog te veranderen naar @input
   constructor(private statsService: Stats){}
   turnsSurvived = 0;
   maxHerbivoresAtOnce = 0;
@@ -24,6 +25,7 @@ export class Highscores {
     this.totalCarnivores = this.statsService.totalCarnivores;
     this.totalHerbivores = this.statsService.totalHerbivores;
   }
+  //om highscores te tonen en weer weg te halen wordt variabele gebruikt die html toont of weghaalt
   showHighscores(){
     this.highscores=true;
   }

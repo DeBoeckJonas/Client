@@ -142,7 +142,7 @@ export class Simulation implements AfterViewInit{
   get carnivoreAmount(): number {
     return this.simulationService.carnivores.length;
   }
-
+  //haalt scene leeg en voegt entities opgehaald uit db toe
   continue(){
     for(let i=0; i<this.#scene.children.length;i++){
       this.#scene.remove(this.#scene.children[i])

@@ -10,6 +10,7 @@ import { Carnivore } from '../models/carnivore.model';
 export class BackendCommunication {
   constructor(private simulationService: SimulationService){}
 
+  //voorlopig  id ook opgeslagen in arrays, deze kan nog niet gebruikt worden, maar al toegevoegd voor later gebruik (na refactor)
   plantsArray:{id:number, xCoord:number, zCoord:number} [] = []
   carnivoresArray:{id:number, xCoord:number, zCoord:number, reproduction:number, hunger:number} [] = []
   herbivoresArray:{id:number, xCoord:number, zCoord:number, reproduction:number, hunger:number} [] = []
@@ -17,8 +18,10 @@ export class BackendCommunication {
   updateCarnivore!: ReturnType<typeof setInterval>;
   updateHerbivore!: ReturnType<typeof setInterval>;
 
+  //startupdate methode om intervals aan te maken die dieren updaten in backend elke gametick (per dier verschillend)
   startUpdate(){
     this.updatePlant = setInterval(async ():Promise<void> => {
+      //array leegmaken en nadien elke huidige entity toevoegen aan array, waarna fetch deze via put in db zet
       this.plantsArray = [];
       this.simulationService.plants.forEach(p => {
         const plant = {id:p.id, xCoord:p.xCoord, zCoord:p.zCoord}
@@ -32,7 +35,7 @@ export class BackendCommunication {
     }, this.simulationService.intervalTimePlant);
 
     this.updateCarnivore = setInterval(async ():Promise<void> => {
-      this.herbivoresArray = [];
+      this.carnivoresArray = [];
       this.simulationService.carnivores.forEach(c => {
         const carnivore = {id:c.id, xCoord:c.xCoord, zCoord:c.zCoord, reproduction:c.reproduction, hunger:c.hunger}
         this.carnivoresArray.push(carnivore)
@@ -45,7 +48,7 @@ export class BackendCommunication {
     }, this.simulationService.intervalTimeCarnivore);
 
     this.updateHerbivore = setInterval(async ():Promise<void> => {
-      this.carnivoresArray = [];
+      this.herbivoresArray = [];
       this.simulationService.herbivores.forEach(c => {
         const herbivore = {id:c.id, xCoord:c.xCoord, zCoord:c.zCoord, reproduction:c.reproduction, hunger:c.hunger}
         this.herbivoresArray.push(herbivore)
@@ -57,12 +60,14 @@ export class BackendCommunication {
       })
     }, this.simulationService.intervalTimeHerbivore);
   }
+
+  //bij beindiging moeten intervals beeindigd worden
   stopUpdate(){
     clearInterval(this.updatePlant);
     clearInterval(this.updateCarnivore);
     clearInterval(this.updateHerbivore);
   }
-
+  //data ophalen uit db, eerst array van service leegmaken, daarna degenen uit db er in zetten, bij plants geen return nodig, gebeurd impliciet door oneliner
   async retrieveData(){
     let responseP = await fetch('http://localhost:3010/plants');
     if(responseP.ok) {

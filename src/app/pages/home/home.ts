@@ -11,12 +11,15 @@ import { Highscores } from '../../components/highscores/highscores';
   styleUrl: './home.css'
 })
 export class Home {
+  //viewchild zodat settingsform en highscore methods kunnen gebruikt worden
   @ViewChild(SettingsForm) settingsForm!:SettingsForm;
   @ViewChild(Highscores) highscores!:Highscores;
-
+  //zet de showstartform op true (methode in settingsform)
   triggerSettingsForm() {
     this.settingsForm.showStartForm();
   }
+  //doe de getstats method op highscores om stats op te halen
+  //zet showhighscores op true (methode in showhighscores)
   triggerHighscores(){
     this.highscores.getStats();
     this.highscores.showHighscores();

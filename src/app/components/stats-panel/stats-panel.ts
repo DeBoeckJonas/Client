@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './stats-panel.css'
 })
 export class StatsPanel {
+  //input voor aantal entities op te halen
   @Input() plantAmount!: number;
   @Input() herbivoreAmount!: number;
   @Input() carnivoreAmount!: number;

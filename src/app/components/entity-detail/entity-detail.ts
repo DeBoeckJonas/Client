@@ -10,5 +10,6 @@ import { AnimalModel } from '../../models/animal.model';
   styleUrl: './entity-detail.css'
 })
 export class EntityDetail {
+  // input om data van de entities op te halen zodat de html deze kan tonen
   @Input() animal!: AnimalModel;
 }

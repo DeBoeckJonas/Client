@@ -15,7 +15,7 @@ export class Stats {
   turnsSurvivedInterval!: ReturnType<typeof setInterval>;
   constructor(private simulationService: SimulationService){
   }
-  
+  //voor highscore logica wordt bij turns survived de waarde van de traagste turn gebruikt, zo kan geen van beide waarden zeer laag gezet worden voor snel een hoge score te hebben
   setTurnsToTicks(){
     if(this.simulationService.intervalTimeHerbivore>= this.simulationService.intervalTimeCarnivore){
       this.turnsToTicks = this.simulationService.intervalTimeHerbivore
@@ -23,7 +23,7 @@ export class Stats {
       this.turnsToTicks = this.simulationService.intervalTimeCarnivore
     }
   }
-
+  //check dat er geen interval loopt voor bugs te vermijden, anders start een interval
   startTurnsCounter(){
     if(this.simulationService.isStarted && !this.turnsSurvivedInterval){
       this.turnsSurvivedInterval = setInterval(():void =>{
@@ -32,7 +32,7 @@ export class Stats {
     }
   }
 
-
+  //eindscores worden berekend bij sterven laatste carnivoor (met enkel herbivoren kan het eindeloos doorgaan)
   calculateStats(){
     if(this.simulationService.herbivores.length>this.maxHerbivoresAtOnce){
       this.maxHerbivoresAtOnce = this.simulationService.herbivores.length;

@@ -4,6 +4,7 @@ import { RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-settings-form',
+  //routermodule idem aan navbar, nodig om bij submit naar simulation page te navigeren
   imports: [RouterModule],
   templateUrl: './settings-form.html',
   styleUrl: './settings-form.css'
@@ -16,7 +17,7 @@ export class SettingsForm {
   showStartForm(){
     this.startForm = true;
   }
-
+  //eventueel herschrijven naar @output
   start(plantAmount:string, herbAmount:string, carnAmount:string, herbSearchRange:string, carnSearchRange:string, herbTicks:string, carnTicks:string, plantTicks:string):void{
     this.simulationService.herbSearchRangeInput = parseInt(herbSearchRange);
     this.simulationService.carnSearchRangeInput = parseInt(carnSearchRange);
