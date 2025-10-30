@@ -1,26 +1,24 @@
 import * as THREE from 'three';
 import { EntityModel } from './entity.model';
 
-export class Plant implements EntityModel{
+export class Plant extends EntityModel{
 
     //variabelen
-    gridsize!:number;
-    entityCube!: THREE.Mesh;
+
     static #lastId = 0;
     #id:number;
-    xCoord!:number;
-    zCoord!:number;
+
 
 
     constructor(x:number, z:number) {
+        super(x,z)
         this.#id = Plant.#lastId++;
-        this.xCoord = x;
-        this.zCoord = z;
+
     }
 
 
     //plant aanmaken
-    createEntity(scene:THREE.Scene):Plant{
+    override createEntity(scene:THREE.Scene):Plant{
         this.gridsize = 30;
         this.entityCube = new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
