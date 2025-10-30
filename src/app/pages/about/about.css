@@ -1,0 +1,15 @@
+.container{
+        color: white;
+            height: 90vh;
+            background: linear-gradient(135deg, #535353, #0f0f0f, #535353);
+            border-top: 2px solid;
+            border-image: linear-gradient(135deg, #ffffff, #00ffcc, #ffffff) 1;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            align-items: center;
+        
+            box-sizing: border-box;
+            text-align: center;
+}
