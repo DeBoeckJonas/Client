@@ -28,7 +28,6 @@ export class Stats {
     if(this.simulationService.isStarted && !this.turnsSurvivedInterval){
       this.turnsSurvivedInterval = setInterval(():void =>{
         this.turnsSurvived++;
-        console.log(this.turnsSurvived);
       }, this.turnsToTicks)
     }
   }

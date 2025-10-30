@@ -32,8 +32,7 @@ export class Simulation implements AfterViewInit{
   #camera!: THREE.PerspectiveCamera;
   #grid!: Grid;
   selectedType: 'herbivore' | 'carnivore' | null = null;
-  selectedAnimal!: AnimalModel;
-  
+  selectedAnimal!: AnimalModel;  
   
 
   //nodig voor markForCheck, alsook simulation service meegeven
@@ -80,10 +79,14 @@ export class Simulation implements AfterViewInit{
     })
 
     if(this.simulationService.isStarted){
-      this.start();
       this.backendCommunication.stopUpdate();
-      this.backendCommunication.startUpdate();
+      this.start();
     }
+    setInterval(() => {
+    if(this.simulationService.continueValue){
+      console.log("nnn")
+      this.continue()
+    }}, 100)
   }
 
   //rendered de scene en grid
@@ -98,11 +101,14 @@ export class Simulation implements AfterViewInit{
     clearInterval(this.simulationService.herbInterval)
     clearInterval(this.simulationService.plantInterval)
 
+
+
     //reset scene
     this.simulationService.plants = [];
     this.simulationService.herbivores = [];
     this.simulationService.carnivores = [];
-
+    this.backendCommunication.startUpdate();
+    
     for(let i=0; i<this.#scene.children.length;i++){
       this.#scene.remove(this.#scene.children[i])
     }
@@ -135,5 +141,17 @@ export class Simulation implements AfterViewInit{
 
   get carnivoreAmount(): number {
     return this.simulationService.carnivores.length;
+  }
+
+  continue(){
+    for(let i=0; i<this.#scene.children.length;i++){
+      this.#scene.remove(this.#scene.children[i])
+    }
+    this.#scene.add(this.#grid.mesh);
+    this.#scene.add(this.#grid.grid);
+    this.simulationService.plants.forEach(p => p.createEntity(this.#scene));
+    this.simulationService.herbivores.forEach(h => h.createEntity(this.#scene));
+    this.simulationService.carnivores.forEach(c => c.createEntity(this.#scene));
+    this.simulationService.continueValue = false;
   }
 }

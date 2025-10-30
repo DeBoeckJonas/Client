@@ -46,6 +46,7 @@ export class SimulationService {
   carnInterval!: ReturnType<typeof setInterval>;
   totalHerb!: number;
   totalCarn!: number;
+  continueValue = false;
 
   constructor() {
     
@@ -185,5 +186,10 @@ export class SimulationService {
         }
       }
     }
+  }
+  continue(){
+    console.log(this.carnivores);
+    console.log(this.plants);
+    this.continueValue = true;
   }
 }
