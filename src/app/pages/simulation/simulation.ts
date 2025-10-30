@@ -11,6 +11,7 @@ import { SimulationService } from '../../services/simulation';
 import { EntityDetail } from "../../components/entity-detail/entity-detail";
 import { AnimalModel } from '../../models/animal.model';
 import { Stats } from '../../services/stats';
+import { BackendCommunication } from '../../services/backend-communication';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class Simulation implements AfterViewInit{
   
 
   //nodig voor markForCheck, alsook simulation service meegeven
-  constructor(private simulationService: SimulationService, private stats:Stats, private cdr: ChangeDetectorRef) {}
+  constructor(private backendCommunication: BackendCommunication, private simulationService: SimulationService, private stats:Stats, private cdr: ChangeDetectorRef) {}
 
   get simulationServiceForHTML(){
     return this.simulationService;
@@ -80,6 +81,8 @@ export class Simulation implements AfterViewInit{
 
     if(this.simulationService.isStarted){
       this.start();
+      this.backendCommunication.stopUpdate();
+      this.backendCommunication.startUpdate();
     }
   }
 
