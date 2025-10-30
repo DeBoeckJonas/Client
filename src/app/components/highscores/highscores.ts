@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Stats } from '../../services/stats';
 
 
@@ -9,22 +9,15 @@ import { Stats } from '../../services/stats';
   styleUrl: './highscores.css'
 })
 export class Highscores {
-  // constructor en getstats nog te veranderen naar @input
-  constructor(private statsService: Stats){}
-  turnsSurvived = 0;
-  maxHerbivoresAtOnce = 0;
-  maxCarnivoresAtOnce =  0;
-  totalHerbivores = 0;
-  totalCarnivores = 0;
+  //input voor waarden voor highscores op te halen
+  @Input() turnsSurvived = 0;
+  @Input() maxHerbivoresAtOnce = 0;
+  @Input() maxCarnivoresAtOnce = 0;
+  @Input() totalHerbivores = 0;
+  @Input() totalCarnivores = 0;
+
   highscores = false;
 
-  getStats(){
-    this.turnsSurvived = this.statsService.turnsSurvived;
-    this.maxCarnivoresAtOnce = this.statsService.maxCarnivoresAtOnce;
-    this.maxHerbivoresAtOnce = this.statsService.maxHerbivoresAtOnce;
-    this.totalCarnivores = this.statsService.totalCarnivores;
-    this.totalHerbivores = this.statsService.totalHerbivores;
-  }
   //om highscores te tonen en weer weg te halen wordt variabele gebruikt die html toont of weghaalt
   showHighscores(){
     this.highscores=true;

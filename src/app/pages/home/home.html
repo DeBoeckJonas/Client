@@ -5,6 +5,6 @@
         <button (click)="triggerHighscores()">Highscores</button>
     </div>
     <app-settings-form></app-settings-form>
-    <app-highscores></app-highscores>
+    <app-highscores [turnsSurvived]="turnsSurvived" [maxHerbivoresAtOnce]="maxHerbivores" [maxCarnivoresAtOnce]="maxCarnivores" [totalHerbivores]="totalHerbivores" [totalCarnivores]="totalCarnivores"></app-highscores>
 
 </div>
