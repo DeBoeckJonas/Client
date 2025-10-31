@@ -10,6 +10,7 @@ export class AnimalModel extends EntityModel{
   id!:number
   color!:number;
   height!:number;
+  paused=false;
 
   update(): void {
     this.hunger--;
@@ -29,7 +30,7 @@ export class AnimalModel extends EntityModel{
   };
   move(scene: THREE.Scene): void {
     //eerst zien of er al een entitycube bestaat, anders wordt move opgeroepen op undefined en beweegt niets
-    if (this.entityCube){
+    if (this.entityCube&&!this.paused){
     scene.remove(this.entityCube);
     this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,0.7, this.zCoord-this.gridsize/2+0.5);
     scene.add(this.entityCube);}

@@ -47,6 +47,7 @@ export class SimulationService {
   totalHerb!: number;
   totalCarn!: number;
   continueValue = false;
+  isUpdating = false;
 
   constructor() {
     
@@ -62,6 +63,20 @@ export class SimulationService {
     this.carnivoreSearchRange = this.carnSearchRangeInput;
     this.totalHerb = this.startAmountHerbInput;
     this.totalCarn = this.startAmountCarnInput;
+  }
+
+  pauseUpdate(){
+    if(this.isUpdating){
+      clearInterval(this.plantInterval);
+      clearInterval(this.carnInterval);
+      clearInterval(this.herbInterval);
+      setTimeout(()=>{
+        this.herbivores.forEach(h => h.paused = true);
+        this.carnivores.forEach(c => c.paused = true);       
+      }
+      , 4000)
+      this.isUpdating=false;
+    }
   }
 
   //intervals in method gestoken, zodat simulation view deze makkelijk kan aanroepen
@@ -81,13 +96,14 @@ export class SimulationService {
   }
   //create entity functie voor alle models
   createEntity(entityClass:typeof EntityModel, entityArray:Array<EntityModel>, scene:THREE.Scene){
+    if(!this.isUpdating){
     let x = Math.floor(Math.random()*30);
     let z = Math.floor(Math.random()*30);     
     if(!entityArray.some(h => h.xCoord === x && h.zCoord === z)){
       const entity = new entityClass(x,z)
       entity.createEntity(scene)
       entityArray.push(entity);
-    } else { console.log("spot already taken") }
+    } else { console.log("spot already taken") }}
   }
     
   //create entities op start
@@ -99,6 +115,7 @@ export class SimulationService {
 
   //move method
   move(entityClass:typeof AnimalModel, entityArray:Array<AnimalModel>, targetArray: Array<EntityModel>, searchRange:number, scene:THREE.Scene){
+    if(!this.isUpdating){
     for(let i = 0; i<entityArray.length; i++){
       //honger aanpassen
       entityArray[i].update();
@@ -185,7 +202,7 @@ export class SimulationService {
           this.totalCarn++;
         }
       }
-    }
+    }}
   }
   continue(){
     console.log(this.carnivores);

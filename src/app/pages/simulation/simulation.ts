@@ -144,14 +144,12 @@ export class Simulation implements AfterViewInit{
   }
   //haalt scene leeg en voegt entities opgehaald uit db toe
   continue(){
-    for(let i=0; i<this.#scene.children.length;i++){
-      this.#scene.remove(this.#scene.children[i])
-    }
+    this.#scene.clear()
     this.#scene.add(this.#grid.mesh);
     this.#scene.add(this.#grid.grid);
-    this.simulationService.plants.forEach(p => p.createEntity(this.#scene));
+    setTimeout(()=>{this.simulationService.plants.forEach(p => p.createEntity(this.#scene));
     this.simulationService.herbivores.forEach(h => h.createEntity(this.#scene));
-    this.simulationService.carnivores.forEach(c => c.createEntity(this.#scene));
+    this.simulationService.carnivores.forEach(c => c.createEntity(this.#scene));}, 2000)
     this.simulationService.continueValue = false;
   }
 }
