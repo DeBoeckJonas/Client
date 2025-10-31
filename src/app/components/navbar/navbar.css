@@ -11,7 +11,13 @@ nav {
     border-image: linear-gradient(135deg, #ffffff, #00ffcc, #ffffff) 1;
     font-family: 'Orbitron', sans-serif;
     color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc;
+    text-shadow: 0 0 5px #ffffff, 0 10px 10px #ffffff;
     z-index: 10;
     box-sizing: border-box;
+}
+a{
+    color:#00ffcc
+}
+a:hover{
+    color: #ffffff;
 }

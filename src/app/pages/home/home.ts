@@ -21,10 +21,12 @@ export class Home {
   triggerSettingsForm() {
     this.settingsForm.showStartForm();
   }
+  ngOnInit() {
+    this.backendcom.retrieveHighscores();
+  }
   //doe de getstats method op highscores om stats op te halen
   //zet showhighscores op true (methode in showhighscores)
   async triggerHighscores(){
-    await this.backendcom.retrieveHighscores();
     this.highscores.showHighscores();
     console.log('clicked')
   }
