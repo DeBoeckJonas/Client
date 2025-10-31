@@ -48,7 +48,6 @@ export class Stats {
       if(this.totalHerbivores<this.simulationService.totalHerb){
         this.totalHerbivores = this.simulationService.totalHerb;
       }
-      clearInterval(this.turnsSurvivedInterval);
       console.log(this.maxCarnivoresAtOnce + " carn " + this.maxHerbivoresAtOnce + " herb " + this.turnsSurvived + " survived " + this.totalCarnivores + " max carn " + this.totalHerbivores + " max herb");
     }
   }

@@ -83,6 +83,7 @@ export class BackendCommunication {
       this.simulationService.herbivores = oldHerbArray.map((p:any)=> {const herbivore = new Herbivore(p.xCoord, p.zCoord)
         herbivore.hunger = p.hunger;
         herbivore.reproduction = p.reproduction;
+        herbivore.id = p.id;
         return herbivore
       })
       console.log(this.simulationService.herbivores)
@@ -93,7 +94,8 @@ export class BackendCommunication {
       let oldCarnArray = await responseC.json();
       this.simulationService.carnivores = oldCarnArray.map((p:any)=> {const carnivore = new Carnivore(p.xCoord, p.zCoord)
         carnivore.hunger = p.hunger;
-        carnivore.reproduction = p.reproduction
+        carnivore.reproduction = p.reproduction;
+        carnivore.id = p.id
         return carnivore
       })
       console.log(this.simulationService.carnivores)

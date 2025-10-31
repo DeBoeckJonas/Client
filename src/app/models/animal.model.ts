@@ -28,9 +28,11 @@ export class AnimalModel extends EntityModel{
     this.reproduction = 0;
   };
   move(scene: THREE.Scene): void {
+    //eerst zien of er al een entitycube bestaat, anders wordt move opgeroepen op undefined en beweegt niets
+    if (this.entityCube){
     scene.remove(this.entityCube);
     this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,0.7, this.zCoord-this.gridsize/2+0.5);
-    scene.add(this.entityCube);
+    scene.add(this.entityCube);}
   };
   override createEntity(scene: THREE.Scene): void {
     this.hunger = this.maxHunger;
@@ -43,4 +45,5 @@ export class AnimalModel extends EntityModel{
     this.entityCube.position.set(this.xCoord-this.gridsize/2+0.5,this.height, this.zCoord-this.gridsize/2+0.5);
     scene.add(this.entityCube)
   }
+
 }

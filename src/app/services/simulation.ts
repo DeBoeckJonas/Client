@@ -27,11 +27,11 @@ export class SimulationService {
   intervalTimeHerbivore!: number;
   intervalTimeCarnivore!: number;
   plant!: Plant;
-  plants = new Array;
+  plants = new Array<Plant>;
   herbivore!: Herbivore;
-  herbivores = new Array;
+  herbivores = new Array<Herbivore>;
   carnivore! : Carnivore;
-  carnivores = new Array;
+  carnivores = new Array<Carnivore>;
   isStarted = false;
   startAmountPlantInput!: number;
   startAmountHerbInput!: number;

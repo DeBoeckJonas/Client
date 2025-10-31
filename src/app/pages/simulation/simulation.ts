@@ -101,7 +101,7 @@ export class Simulation implements AfterViewInit{
     clearInterval(this.simulationService.herbInterval)
     clearInterval(this.simulationService.plantInterval)
 
-
+    clearInterval(this.stats.turnsSurvivedInterval)
 
     //reset scene
     this.simulationService.plants = [];
