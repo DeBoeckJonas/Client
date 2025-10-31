@@ -96,6 +96,7 @@ export class Simulation implements AfterViewInit{
   }
   
   start() {
+    console.log("started")
     //intervals leegmaken, was oplossing voor raar gedrag bij verlaten en terug navigeren naar simulation route
     clearInterval(this.simulationService.carnInterval)
     clearInterval(this.simulationService.herbInterval)

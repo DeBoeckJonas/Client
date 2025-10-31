@@ -3,12 +3,14 @@ import { SimulationService } from './simulation';
 import { Plant } from '../models/plant.model';
 import { Herbivore } from '../models/herbivore.model';
 import { Carnivore } from '../models/carnivore.model';
+import { Highscores } from '../components/highscores/highscores';
+import { Stats } from './stats';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendCommunication {
-  constructor(private simulationService: SimulationService){}
+  constructor(private simulationService: SimulationService, private stats: Stats ){}
 
   //voorlopig  id ook opgeslagen in arrays, deze kan nog niet gebruikt worden, maar al toegevoegd voor later gebruik (na refactor)
   plantsArray:{id:number, xCoord:number, zCoord:number} [] = []
@@ -17,9 +19,16 @@ export class BackendCommunication {
   updatePlant!: ReturnType<typeof setInterval>;
   updateCarnivore!: ReturnType<typeof setInterval>;
   updateHerbivore!: ReturnType<typeof setInterval>;
+  updateHighscores!: ReturnType<typeof setInterval>;
+  highscores = new Highscores;
 
   //startupdate methode om intervals aan te maken die dieren updaten in backend elke gametick (per dier verschillend)
   startUpdate(){
+    this.highscores.turnsSurvived = 0;
+    this.highscores.maxHerbivoresAtOnce = 0;
+    this.highscores.maxCarnivoresAtOnce = 0;
+    this.highscores.totalHerbivores = 0;
+    this.highscores.totalCarnivores = 0;
     this.updatePlant = setInterval(async ():Promise<void> => {
       //array leegmaken en nadien elke huidige entity toevoegen aan array, waarna fetch deze via put in db zet
       this.plantsArray = [];
@@ -59,6 +68,25 @@ export class BackendCommunication {
         body: JSON.stringify(this.herbivoresArray)
       })
     }, this.simulationService.intervalTimeHerbivore);
+
+    this.updateHighscores = setInterval(async ():Promise<void>=> {
+      this.highscores.turnsSurvived = this.stats.turnsSurvived;
+      this.highscores.maxCarnivoresAtOnce = this.stats.maxCarnivoresAtOnce;
+      this.highscores.maxHerbivoresAtOnce = this.stats.maxHerbivoresAtOnce;
+      this.highscores.totalHerbivores = this.stats.totalHerbivores;
+      this.highscores.totalCarnivores = this.stats.totalCarnivores;
+      await fetch('http://localhost:3010/update-highscores', {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          highestTurns: this.highscores.turnsSurvived,
+          maxHerbAtOnce: this.highscores.maxHerbivoresAtOnce,
+          maxCarnAtOnce: this.highscores.maxCarnivoresAtOnce,
+          maxHerbInOneGame: this.highscores.totalHerbivores,
+          maxCarnInOneGame: this.highscores.totalCarnivores
+        })
+      })
+    }, 1000); 
   }
 
   //bij beindiging moeten intervals beeindigd worden
@@ -66,6 +94,7 @@ export class BackendCommunication {
     clearInterval(this.updatePlant);
     clearInterval(this.updateCarnivore);
     clearInterval(this.updateHerbivore);
+    clearInterval(this.updateHighscores)
   }
   //data ophalen uit db, eerst array van service leegmaken, daarna degenen uit db er in zetten, bij plants geen return nodig, gebeurd impliciet door oneliner
   async retrieveData(){
@@ -99,6 +128,18 @@ export class BackendCommunication {
         return carnivore
       })
       console.log(this.simulationService.carnivores)
+    }
+    
+  }
+  async retrieveHighscores() {
+    let responseS = await fetch('http://localhost:3010/highscores');
+    if(responseS.ok) {
+      let highscoresRetrieved = await responseS.json();
+      this.stats.maxCarnivoresAtOnce = highscoresRetrieved.maxCarnAtOnce;
+      this.stats.maxHerbivoresAtOnce = highscoresRetrieved.maxHerbAtOnce;
+      this.stats.turnsSurvived = highscoresRetrieved.highestTurns;
+      this.stats.totalCarnivores = highscoresRetrieved.maxHerbInOneGame;
+      this.stats.totalHerbivores = highscoresRetrieved.maxCarnInOneGame;
     }
   }
 }
