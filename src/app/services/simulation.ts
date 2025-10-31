@@ -208,5 +208,6 @@ export class SimulationService {
     console.log(this.carnivores);
     console.log(this.plants);
     this.continueValue = true;
+    this.isStarted = true;
   }
 }
