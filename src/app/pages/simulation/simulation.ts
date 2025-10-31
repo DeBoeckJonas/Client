@@ -33,8 +33,8 @@ export class Simulation implements AfterViewInit{
   #grid!: Grid;
   selectedType: 'herbivore' | 'carnivore' | null = null;
   selectedAnimal!: AnimalModel;  
+  continueTimeout:any;
   
-
   //nodig voor markForCheck, alsook simulation service meegeven
   constructor(private backendCommunication: BackendCommunication, private simulationService: SimulationService, private stats:Stats, private cdr: ChangeDetectorRef) {}
 
@@ -142,14 +142,20 @@ export class Simulation implements AfterViewInit{
   get carnivoreAmount(): number {
     return this.simulationService.carnivores.length;
   }
+
   //haalt scene leeg en voegt entities opgehaald uit db toe
   continue(){
     this.#scene.clear()
     this.#scene.add(this.#grid.mesh);
     this.#scene.add(this.#grid.grid);
-    setTimeout(()=>{this.simulationService.plants.forEach(p => p.createEntity(this.#scene));
-    this.simulationService.herbivores.forEach(h => h.createEntity(this.#scene));
-    this.simulationService.carnivores.forEach(c => c.createEntity(this.#scene));}, 2000)
+    //timeout loopt soms nog door moeilijke timing en veroorzaakt bugs, eerst leegmaken als deze nog loopt
+    if(this.continueTimeout) clearTimeout(this.continueTimeout)
+    //timeout voor recreatie zodat oude instances zeker niet nog bestaan
+    this.continueTimeout = setTimeout(()=>{
+      this.simulationService.plants.forEach(p => p.createEntity(this.#scene));
+      this.simulationService.herbivores.forEach(h => h.createEntity(this.#scene));
+      this.simulationService.carnivores.forEach(c => c.createEntity(this.#scene));
+    }, 2000)
     this.simulationService.continueValue = false;
   }
 }
