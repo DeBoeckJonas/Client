@@ -21,6 +21,7 @@ export class Home {
   triggerSettingsForm() {
     this.settingsForm.showStartForm();
   }
+  //retrievehighscores on init gezet want anders kan de method buggen, payload is klein genoeg om te laden voor user triggerhighscores kan activeren
   ngOnInit() {
     this.backendcom.retrieveHighscores();
   }
