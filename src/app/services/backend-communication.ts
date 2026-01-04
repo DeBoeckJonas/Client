@@ -62,7 +62,6 @@ export class BackendCommunication {
         const herbivore = {id:c.id, xCoord:c.xCoord, zCoord:c.zCoord, reproduction:c.reproduction, hunger:c.hunger}
         this.herbivoresArray.push(herbivore)
       });
-      console.log(this.herbivoresArray)
       await fetch('http://localhost:3010/update-herbivores', {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},

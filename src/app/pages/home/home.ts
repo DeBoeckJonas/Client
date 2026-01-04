@@ -29,7 +29,6 @@ export class Home {
   //zet showhighscores op true (methode in showhighscores)
   async triggerHighscores(){
     this.highscores.showHighscores();
-    console.log('clicked')
   }
   get turnsSurvived() { return this.stats.turnsSurvived; }
   get maxHerbivores() { return this.stats.maxHerbivoresAtOnce; }

@@ -12,19 +12,22 @@ import { SimulationService } from '../../services/simulation';
   styleUrl: './navbar.css'
 })
 export class Navbar {
+  //clicked zodat dit enkel kan opgeroepen worden na refresh of page navigatie, houdt duplicatie van entities tegen
   clicked=false;
   //retrieveData hier gezet zodat deze opgehaald wordt bij het navigeren naar /simulation
-  constructor(private simulationService: SimulationService, private backendCommunication: BackendCommunication, private simulation: SimulationService){}
+  constructor(private backendCommunication: BackendCommunication, private simulation: SimulationService){}
   async retrieveData(){
     if(!this.clicked){
-      console.log("loading")
-      this.simulation.isUpdating = true;
       await this.backendCommunication.retrieveData();
       await this.backendCommunication.retrieveStartvalues();
-      console.log("tecl" + this.simulationService.carnTickInput)
       await this.simulation.continue();
       this.clicked = true;
-      this.simulation.isUpdating = false;
     }
+  }
+  stop(){
+    this.clicked = false;
+    this.simulation.startValuesTrigger = false;
+    this.simulation.isStarted = false;
+    this.simulation.continueValue = false;
   }
 }

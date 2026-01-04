@@ -18,7 +18,7 @@ export class SettingsForm {
   showStartForm(){
     this.startForm = true;
   }
-  //eventueel herschrijven naar @output
+
   start(plantAmount:string, herbAmount:string, carnAmount:string, herbSearchRange:string, carnSearchRange:string, herbTicks:string, carnTicks:string, plantTicks:string):void{
     this.simulationService.startValuesTrigger = true;
     this.simulationService.herbSearchRangeInput = parseInt(herbSearchRange);
