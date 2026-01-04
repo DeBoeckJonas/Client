@@ -36,6 +36,7 @@ export class AnimalModel extends EntityModel{
     scene.add(this.entityCube);}
   };
   override createEntity(scene: THREE.Scene): void {
+    if (this.height === undefined) this.height = 0.5;
     this.hunger = this.maxHunger;
     this.reproduction = 0;
     this.gridsize = 30;

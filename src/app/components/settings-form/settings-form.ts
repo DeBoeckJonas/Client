@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { SimulationService } from '../../services/simulation';
 import { RouterModule } from "@angular/router";
+import { BackendCommunication } from '../../services/backend-communication';
 
 @Component({
   selector: 'app-settings-form',
@@ -10,7 +11,7 @@ import { RouterModule } from "@angular/router";
   styleUrl: './settings-form.css'
 })
 export class SettingsForm {
-  constructor(private simulationService : SimulationService){
+  constructor(private simulationService : SimulationService, private backendCommunication : BackendCommunication){
     
   }
   startForm = false;
@@ -19,6 +20,7 @@ export class SettingsForm {
   }
   //eventueel herschrijven naar @output
   start(plantAmount:string, herbAmount:string, carnAmount:string, herbSearchRange:string, carnSearchRange:string, herbTicks:string, carnTicks:string, plantTicks:string):void{
+    this.simulationService.startValuesTrigger = true;
     this.simulationService.herbSearchRangeInput = parseInt(herbSearchRange);
     this.simulationService.carnSearchRangeInput = parseInt(carnSearchRange);
     this.simulationService.startAmountPlantInput = parseInt(plantAmount);
@@ -29,5 +31,6 @@ export class SettingsForm {
     this.simulationService.plantTickInput = parseInt(plantTicks);
     this.simulationService.isStarted = true;
     this.startForm = false;
+    this.backendCommunication.updateStartValues();
   }
 }

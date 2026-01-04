@@ -62,6 +62,7 @@ export class BackendCommunication {
         const herbivore = {id:c.id, xCoord:c.xCoord, zCoord:c.zCoord, reproduction:c.reproduction, hunger:c.hunger}
         this.herbivoresArray.push(herbivore)
       });
+      console.log(this.herbivoresArray)
       await fetch('http://localhost:3010/update-herbivores', {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
@@ -88,6 +89,19 @@ export class BackendCommunication {
       })
     }, 1000); 
   }
+  async updateStartValues(){
+    await fetch('http://localhost:3010/update-startValues', {
+      method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          herbSearchRangeInput: this.simulationService.herbSearchRangeInput,
+          carnSearchRangeInput: this.simulationService.carnSearchRangeInput,
+          carnTickInput: this.simulationService.carnTickInput,
+          herbTickInput: this.simulationService.herbTickInput,
+          plantTickInput: this.simulationService.plantTickInput
+        })
+    })
+  }
 
   //bij beindiging moeten intervals beeindigd worden
   stopUpdate(){
@@ -103,7 +117,7 @@ export class BackendCommunication {
       this.simulationService.plants = [];
       let oldPlantArray = await responseP.json();
       this.simulationService.plants = oldPlantArray.map((p:any)=> new Plant(p.xCoord, p.zCoord))
-      console.log(this.simulationService.plants)
+      
     }
     let responseH = await fetch('http://localhost:3010/herbivores');
     if(responseH.ok) {
@@ -115,7 +129,6 @@ export class BackendCommunication {
         herbivore.id = p.id;
         return herbivore
       })
-      console.log(this.simulationService.herbivores)
     }
     let responseC = await fetch('http://localhost:3010/carnivores');
     if(responseC.ok) {
@@ -127,7 +140,6 @@ export class BackendCommunication {
         carnivore.id = p.id
         return carnivore
       })
-      console.log(this.simulationService.carnivores)
     }
     
   }
@@ -142,4 +154,14 @@ export class BackendCommunication {
       this.stats.totalHerbivores = highscoresRetrieved.maxCarnInOneGame;
     }
   }
+  async retrieveStartvalues() {
+    let responseS = await fetch('http://localhost:3010/startValues');
+    if(responseS.ok) {
+      let valuesRetrieved = await responseS.json();
+      this.simulationService.herbSearchRangeInput = valuesRetrieved.herbSearchRangeInput
+      this.simulationService.carnSearchRangeInput = valuesRetrieved.carnSearchRangeInput
+      this.simulationService.carnTickInput = valuesRetrieved.carnTickInput
+      this.simulationService.herbTickInput = valuesRetrieved.herbTickInput
+      this.simulationService.plantTickInput = valuesRetrieved.plantTickInput
+    }}
 }

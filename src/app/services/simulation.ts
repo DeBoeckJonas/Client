@@ -48,21 +48,25 @@ export class SimulationService {
   totalCarn!: number;
   continueValue = false;
   isUpdating = false;
+  startValuesTrigger!:boolean;
 
   constructor() {
     
   }
   setStartValues(){
+    if(this.startValuesTrigger){
     this.startAmountHerb = this.startAmountHerbInput;
     this.startAmountPlants = this.startAmountPlantInput;
     this.startAmountCarnivores = this.startAmountCarnInput;
+    this.totalHerb = this.startAmountHerbInput;
+    this.totalCarn = this.startAmountCarnInput;
+    }
     this.intervalTimePlant = this.plantTickInput*1000;
     this.intervalTimeHerbivore = this.herbTickInput*1000;
     this.intervalTimeCarnivore = this.carnTickInput*1000;
     this.herbivoreSearchRange = this.herbSearchRangeInput;
     this.carnivoreSearchRange = this.carnSearchRangeInput;
-    this.totalHerb = this.startAmountHerbInput;
-    this.totalCarn = this.startAmountCarnInput;
+
   }
 
   pauseUpdate(){

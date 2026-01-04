@@ -105,10 +105,10 @@ export class Simulation implements AfterViewInit{
     clearInterval(this.stats.turnsSurvivedInterval)
 
     //reset scene
-    this.simulationService.plants = [];
-    this.simulationService.herbivores = [];
-    this.simulationService.carnivores = [];
+    
+
     this.backendCommunication.startUpdate();
+
     
     for(let i=0; i<this.#scene.children.length;i++){
       this.#scene.remove(this.#scene.children[i])
@@ -116,11 +116,30 @@ export class Simulation implements AfterViewInit{
     this.#scene.add(this.#grid.mesh);
     this.#scene.add(this.#grid.grid);
     this.simulationService.setStartValues()
+    if(this.simulationService.startValuesTrigger){
+      this.simulationService.plants = [];
+      this.simulationService.herbivores = [];
+      this.simulationService.carnivores = [];
+      
+
     //entities aanmaken
-    this.simulationService.createEntityStart(this.simulationService.startAmountHerb, Herbivore, this.simulationService.herbivores, this.#scene);
-    this.simulationService.createEntityStart(this.simulationService.startAmountPlants, Plant, this.simulationService.plants, this.#scene);
-    this.simulationService.createEntityStart(this.simulationService.startAmountCarnivores, Carnivore, this.simulationService.carnivores, this.#scene);
-    
+      this.simulationService.createEntityStart(this.simulationService.startAmountHerb, Herbivore, this.simulationService.herbivores, this.#scene);
+      this.simulationService.createEntityStart(this.simulationService.startAmountPlants, Plant, this.simulationService.plants, this.#scene);
+      this.simulationService.createEntityStart(this.simulationService.startAmountCarnivores, Carnivore, this.simulationService.carnivores, this.#scene);
+      this.simulationService.startValuesTrigger = false;
+      console.log(this.simulationService.herbivores.length)
+    } else {
+      let amountH = this.simulationService.herbivores.length
+      let amountP = this.simulationService.plants.length
+      let amountC = this.simulationService.carnivores.length
+      this.simulationService.plants = [];
+      this.simulationService.herbivores = [];
+      this.simulationService.carnivores = [];
+      this.simulationService.createEntityStart(amountH, Herbivore, this.simulationService.herbivores, this.#scene);
+      this.simulationService.createEntityStart(amountP, Plant, this.simulationService.plants, this.#scene);
+      this.simulationService.createEntityStart(amountC, Carnivore, this.simulationService.carnivores, this.#scene);
+      this.simulationService.startValuesTrigger = false;
+    }
     //entities op grid plaatsen
     this.simulationService.intervalCreation(this.#scene)
     this.stats.setTurnsToTicks();
@@ -145,10 +164,12 @@ export class Simulation implements AfterViewInit{
   }
 
   //haalt scene leeg en voegt entities opgehaald uit db toe
-  continue(){
+  async continue(){
     this.#scene.clear()
+    this.start()
     this.#scene.add(this.#grid.mesh);
     this.#scene.add(this.#grid.grid);
+    console.log("1")
     //timeout loopt soms nog door moeilijke timing en veroorzaakt bugs, eerst leegmaken als deze nog loopt
     if(this.continueTimeout) clearTimeout(this.continueTimeout)
     //timeout voor recreatie zodat oude instances zeker niet nog bestaan
