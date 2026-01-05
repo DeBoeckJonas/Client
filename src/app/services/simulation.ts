@@ -154,7 +154,7 @@ export class SimulationService {
       const closestTarget = closestTargetWithDistance?.target
       const closestTargetDistance = closestTargetWithDistance?.distanceTarget;
       if (!closestTarget || closestTargetDistance === undefined) {
-        continue; // or just 'return' if outside loop
+        continue;
       }
 
       //bewegingslogica voor Target in range 5
